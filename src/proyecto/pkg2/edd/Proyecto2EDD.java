@@ -5,6 +5,8 @@
  */
 package proyecto.pkg2.edd;
 
+import Estructuras.Tabla;
+
 
 
 /**
@@ -12,11 +14,22 @@ package proyecto.pkg2.edd;
  * @author Luis
  */
 public class Proyecto2EDD {
-
+    public static Tabla tablaha=new Tabla();
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+        tablaha.Insertar("a", "fasf");
+        InicioSesion sesion=new InicioSesion();
+        sesion.setVisible(true);
+        sesion.setLocationRelativeTo(null);
+        /*Tabla ha=new Tabla();
+        ha.Insertar("zxy","fernando");
+        ha.Insertar("luis","fernando");
+        ha.Insertar("abc","fernando");
+        ha.Insertar("jorge","fernando");
+        ha.Insertar("eduardo","fernando");
+        ha.Insertar("ab","fernando");
+        ha.Insertar("jkl","fernando");*/
     } 
 }

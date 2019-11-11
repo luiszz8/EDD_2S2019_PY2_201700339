@@ -5,6 +5,8 @@
  */
 package Estructuras;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Luis
@@ -25,7 +27,7 @@ public class Tabla{
     }
     int funcion(String nombre){
         char[] abc ={'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z'};
-        int valor=1;
+        int valor=0;
         for (int i = 0; i < nombre.length(); i++) {
             for (int j = 0; j < abc.length; j++) {
                 if (nombre.charAt(i)==abc[j]) {
@@ -83,25 +85,32 @@ public class Tabla{
     
             
 
-    void Insertar(int tope, nodoH estudiante, nodoH[] tabla){
-  
-        if(porcentaje(tope, tabla)==1){
+    public void Insertar(String nombre,String contra){
+        nodoH estudiante=new nodoH();
+        estudiante.nombre=nombre;
+        estudiante.contrasena=contra;
+        int tope= tablahash.length;
+        if(porcentaje(tope, tablahash)==1){
             //System.out.println("No ha llegado al porcentaje");
             int lugar=lugar(funcion(estudiante.nombre), tope);
-            if(tabla[lugar]==null){
-                tabla[lugar]=estudiante;
+            if(tablahash[lugar]==null){
+                tablahash[lugar]=estudiante;
                 System.out.println("ID: "+estudiante.nombre +"  Posicion : "+lugar);
-            }else{       
+            }else{
+                if (tablahash[lugar].nombre==nombre) {
+                    JOptionPane.showMessageDialog(null, "Usuario ya existe");
+                    return;
+                }
                 double colision=1;
                 System.out.println("Hubo colision en "+lugar);
                 
                 while(true){
                     int numero=lugar+(int)Math.pow(colision, 2);
-                    while(numero>tabla.length-1){
+                    while(numero>tablahash.length-1){
                         numero = numero - tope;
                     }
-                    if(tabla[numero]==null){                        
-                        tabla[numero]=estudiante;
+                    if(tablahash[numero]==null){                        
+                        tablahash[numero]=estudiante;
                         System.out.println(estudiante.nombre+" Se inserto en "+numero);                        
                         break;
                     }else{
@@ -111,12 +120,12 @@ public class Tabla{
             }            
         }else{
             System.out.println("************************************************Llego al 75%*******************************************************");
-            Cambio(tope,estudiante, tabla);
+            Cambio(tope,nombre,contra,tablahash);
         }
-        
+        JOptionPane.showMessageDialog(null, "Usuario ingresado");
     }
     
-    void Cambio(int tope, nodoH estudiante, nodoH[] tabla){
+    void Cambio(int tope,String nombre,String contra, nodoH[] tabla){
         //System.out.println(Esprimo(tope));
         nodoH[] nuevatabla=new nodoH[Esprimo(tope)];
         for (int i = 0; i <tabla.length; i++) {
@@ -128,6 +137,13 @@ public class Tabla{
         }
         this.tablahash = nuevatabla;
         tope=tablahash.length;
-        Insertar(tope, estudiante, tablahash);
+        Insertar(nombre,contra);
+        /*for (int i = 0; i < tablahash.length; i++) {
+            if (tablahash[i]!=null) {
+                System.out.println(tablahash[i].nombre);
+            }else{
+                System.out.println("null");
+            }
+        }*/
     }
 }
