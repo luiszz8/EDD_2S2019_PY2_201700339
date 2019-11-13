@@ -26,8 +26,8 @@ import javax.swing.JOptionPane;
 public class Ventana extends javax.swing.JFrame {
     Matriz aux;
     public String nombreP,carpetaaux;
-    public String[] auxC;
-    public int corX,corY;
+    public String[] auxC,auxA;
+    public int corX,corY,cantC;
     /**
      * Creates new form Ventana
      */
@@ -35,7 +35,7 @@ public class Ventana extends javax.swing.JFrame {
         initComponents();
         aux=raiz;
         nombreP="/";
-        hoja.setLayout(null);
+        jPanel3.setLayout(null);
         pintarCarpetas(nombreP);
     }
 
@@ -61,9 +61,11 @@ public class Ventana extends javax.swing.JFrame {
         jButton8 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        hoja = new javax.swing.JPanel();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -124,6 +126,11 @@ public class Ventana extends javax.swing.JFrame {
         );
 
         jButton5.setText("Crear");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Modificar");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -133,6 +140,11 @@ public class Ventana extends javax.swing.JFrame {
         });
 
         jButton7.setText("Eliminar");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setText("Subir");
 
@@ -171,17 +183,6 @@ public class Ventana extends javax.swing.JFrame {
 
         jTextField1.setText("/");
 
-        javax.swing.GroupLayout hojaLayout = new javax.swing.GroupLayout(hoja);
-        hoja.setLayout(hojaLayout);
-        hojaLayout.setHorizontalGroup(
-            hojaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        hojaLayout.setVerticalGroup(
-            hojaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 413, Short.MAX_VALUE)
-        );
-
         jButton9.setText("Entrar");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -196,50 +197,97 @@ public class Ventana extends javax.swing.JFrame {
             }
         });
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14)
-                        .addComponent(jButton10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
-                    .addComponent(hoja, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(14, 14, 14)
+                                .addComponent(jButton10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton9)
                             .addComponent(jButton10))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(hoja, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
+        int contador=0;
+        while(corX>100){
+            corX=corX-101;
+            contador+=1;
+        }
+        while(corY>50){
+            corY=corY-60;
+            contador+=6;
+        }
+        contador=contador-cantC;
+        String sus=auxA[contador];
+        if (sus.equals("/")||sus.equals("raiz")) {
+            
+        }else{
+            //System.out.println(sus);
+            int p=aux.buscar_fila(nombreP);
+            aux.borrar(aux.buscar_fila(p), sus);
+            jPanel3.removeAll();
+            pintarCarpetas(nombreP);
+        }
+        String ArchivoNuevo = JOptionPane.showInputDialog("Escribe nombre del archivo");
+        Date date = new Date();
+        DateFormat hourdateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+        String time = "Hora y fecha: " + hourdateFormat.format(date);
+        String[] parte = ArchivoNuevo.split("\\.");
+        int p=aux.buscar_fila(nombreP);
+        aux.agregarAVL(parte[0], jTextArea1.getText(), parte[1], time,aux.buscar_fila(p));
+        pintarCarpetas(nombreP);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -268,7 +316,7 @@ public class Ventana extends javax.swing.JFrame {
         }else{
             jTextField1.setText(jTextField1.getText()+"/"+nombreP);
         }
-        hoja.removeAll();
+        jPanel3.removeAll();
         pintarCarpetas(nombreP);
     }//GEN-LAST:event_jButton9ActionPerformed
 
@@ -288,7 +336,7 @@ public class Ventana extends javax.swing.JFrame {
         }else{
             System.out.println("borrar");
             aux.borrar(sus);
-            hoja.removeAll();
+            jPanel3.removeAll();
             pintarCarpetas(nombreP);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -310,7 +358,7 @@ public class Ventana extends javax.swing.JFrame {
             System.out.println("modificar");
             String carpetaNueva = JOptionPane.showInputDialog("Escribe nombre de carpeta");
             aux.modificar(sus, carpetaNueva);
-            hoja.removeAll();
+            jPanel3.removeAll();
             pintarCarpetas(nombreP);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -319,14 +367,48 @@ public class Ventana extends javax.swing.JFrame {
         if (!jTextField1.getText().equals("/")) {
             String[] aux=jTextField1.getText().split("/");
             nombreP=aux[aux.length-1];
-            hoja.removeAll();
+            jPanel3.removeAll();
             pintarCarpetas(nombreP);
         }else{
             nombreP="/";
-            hoja.removeAll();
+            jPanel3.removeAll();
             pintarCarpetas(nombreP);
         }
     }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        String ArchivoNuevo = JOptionPane.showInputDialog("Escribe nombre del archivo");
+        Date date = new Date();
+        DateFormat hourdateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+        String time = "Hora y fecha: " + hourdateFormat.format(date);
+        String[] parte = ArchivoNuevo.split("\\.");
+        int p=aux.buscar_fila(nombreP);
+        aux.agregarAVL(parte[0], jTextArea1.getText(), parte[1], time,aux.buscar_fila(p));
+        pintarCarpetas(nombreP);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        int contador=0;
+        while(corX>100){
+            corX=corX-101;
+            contador+=1;
+        }
+        while(corY>50){
+            corY=corY-60;
+            contador+=6;
+        }
+        contador=contador-cantC;
+        String sus=auxA[contador];
+        if (sus.equals("/")||sus.equals("raiz")) {
+            
+        }else{
+            //System.out.println(sus);
+            int p=aux.buscar_fila(nombreP);
+            aux.borrar(aux.buscar_fila(p), sus);
+            jPanel3.removeAll();
+            pintarCarpetas(nombreP);
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -364,15 +446,19 @@ public class Ventana extends javax.swing.JFrame {
     }
     
     public void pintarCarpetas(String padre){
+        int gX=0,gY=0;
+        cantC=0;
         if (!aux.nombresC(padre).equals(" /;")&&!aux.nombresC(padre).equals("")) {
+            jPanel3.removeAll();
             String[] partes=aux.nombresC(padre).split(";");
             JLabel[] labels=new JLabel[partes.length];
             int x=0;
             int y =0;
+            cantC=partes.length;
             for (int i = 0; i < partes.length; i++) {
                 labels[i]=new JLabel();
                 if (partes[i]!=null && labels[i]!=null) {
-                    System.out.println("entra");
+                    //System.out.println("entra");
                     Image img= new ImageIcon(getClass().getResource("/Imagenes/carpeta.png")).getImage();
                     Image img2=img.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
                     ImageIcon icon =new ImageIcon(img2);
@@ -383,7 +469,7 @@ public class Ventana extends javax.swing.JFrame {
                     labels[i].setText(partes[i]);
                     labels[i].setBounds(x,y,100,50);
                     labels[i].setVisible(true);
-                    hoja.add(labels[i]); 
+                    jPanel3.add(labels[i]); 
                     x+=101;
                     if (x>605) {
                         x=0;
@@ -391,7 +477,17 @@ public class Ventana extends javax.swing.JFrame {
                     }
                 }
             }
-            hoja.addMouseListener(new MouseListener() {
+            gX=x;
+            gY=y;
+            pintarArchivos(nombreP,gX,gY);
+            jPanel3.repaint();
+            auxC=partes;
+        }else{
+            jPanel3.removeAll();
+            pintarArchivos(nombreP,gX,gY);
+            jPanel3.repaint();
+        }
+        jPanel3.addMouseListener(new MouseListener() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
                             corX =e.getPoint().x;
@@ -420,16 +516,41 @@ public class Ventana extends javax.swing.JFrame {
                             
                         }
                     });
-            hoja.repaint();
-            auxC=partes;
-        }else{
-            hoja.removeAll();
-            hoja.repaint();
+    }
+    
+    public void pintarArchivos(String padre,int x,int y){
+        int p=aux.buscar_fila(nombreP);
+        if (!aux.nombresA(aux.buscar_fila(p)).equals("")) {
+            String[] partes=aux.nombresA(aux.buscar_fila(p)).split(";");
+            JLabel[] labels=new JLabel[partes.length];
+            for (int i = 0; i < partes.length; i++) {
+                labels[i]=new JLabel();
+                if (partes[i]!=null && labels[i]!=null) {
+                    //System.out.println("entraArchivo");
+                    Image img= new ImageIcon(getClass().getResource("/Imagenes/logo.png")).getImage();
+                    Image img2=img.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+                    ImageIcon icon =new ImageIcon(img2);
+                    //String path = "/Imagenes/carpeta.png";  
+                    //URL url = this.getClass().getResource(path);  
+                    //ImageIcon icon = new ImageIcon(url);  
+                    labels[i].setIcon(icon);
+                    labels[i].setText(partes[i]);
+                    labels[i].setBounds(x,y,100,50);
+                    labels[i].setVisible(true);
+                    jPanel3.add(labels[i]); 
+                    x+=101;
+                    if (x>605) {
+                        x=0;
+                        y+=60;
+                    }
+                }
+            }
+            auxA=partes;
         }
+    
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel hoja;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
@@ -444,6 +565,9 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

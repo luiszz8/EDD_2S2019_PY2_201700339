@@ -22,6 +22,7 @@ class nodoM{
     public int x,y;
     public Carpeta carpeta;
     public nodoM padre;
+    public ArbolAVL arbol;
     public nodoM(Carpeta carpeta,nodoM padre){
         ant = null;
         sig = null;
@@ -31,6 +32,7 @@ class nodoM{
         y=ay;
         this.carpeta= carpeta;
         this.padre= padre;
+        arbol=new ArbolAVL();
     }
     
     public nodoM(Carpeta carpeta,nodoM padre,int x,int y){
@@ -42,6 +44,7 @@ class nodoM{
         this.y=y;
         this.carpeta= carpeta;
         this.padre= padre;
+        arbol=new ArbolAVL();
     }
 
     public int getX() {
@@ -242,8 +245,8 @@ public class Matriz {
             tem2=tem2.abajo;
             tem= tem2;
         }
-        System.out.println("esto");
-        System.out.println(supre);
+        //System.out.println("esto");
+        //System.out.println(supre);
         return supre;
     }
     
@@ -303,5 +306,15 @@ public class Matriz {
         cabezaC.carpeta.nombre=nuevo;
         cabezaC.abajo.carpeta.nombre=nuevo;
         mostrar();
+    }
+    public void agregarAVL(String nombre,String contenido, String extension, String time,nodoM padre){
+        padre.arbol.insertar(nombre, contenido, extension, time);
+    }
+    
+    public String nombresA(nodoM padre){
+        return padre.arbol.nombresA(padre.arbol.raiz);
+    }
+    public void borrar(nodoM padre,String nombre){
+        System.out.println(padre.arbol.eliminar(nombre));
     }
 }

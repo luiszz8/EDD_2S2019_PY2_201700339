@@ -151,4 +151,87 @@ public class ArbolAVL {
             mos(tem.der);
         }
     }
+    public String nombresA(nodoA tem){
+        String datos="";
+        if(tem!=null){
+            if (tem.izq!=null) {
+                datos=datos+nombresA(tem.izq);
+            }
+            datos=datos+tem.contenido.nombre+";";
+            if (tem.der!=null) {
+                datos=datos+nombresA(tem.der);
+            }
+        }
+        return datos;
+    }
+    public boolean eliminar(String nombre){
+        nodoA auxiliar = raiz;
+        nodoA padre = raiz;
+        boolean esHizq = true;
+        while(!auxiliar.contenido.nombre.equals(nombre)){
+            padre=auxiliar;
+            if (auxiliar.contenido.nombre.compareTo(nombre)>0) {
+                esHizq = true;
+                auxiliar=auxiliar.izq;
+            }else{
+                esHizq = false;
+                auxiliar=auxiliar.der;
+            }
+            if (auxiliar==null) {
+                return false;
+            }
+        }
+        if (auxiliar.izq==null && auxiliar.der==null) {
+            if (auxiliar==raiz) {
+                raiz=null;
+            }else if (esHizq) {
+                padre.izq=null;
+            }else{
+                padre.der=null;
+            }
+        }else if (auxiliar.der==null) {
+            if (auxiliar==raiz) {
+                raiz=auxiliar.izq;
+            }else if (esHizq) {
+                padre.izq=auxiliar.izq;
+            }else{
+                padre.der=auxiliar.izq;
+            }
+        }else if (auxiliar.izq==null) {
+            if (auxiliar==raiz) {
+                raiz=auxiliar.der;
+            }else if (esHizq) {
+                padre.izq=auxiliar.der;
+            }else{
+                padre.der=auxiliar.der;
+            }
+        }else{
+            nodoA reemplazo=obtenerReemplazo(auxiliar);
+            if (auxiliar==raiz) {
+                raiz= reemplazo;
+            }else if (esHizq) {
+                padre.izq=reemplazo;
+            }else{
+                padre.der=reemplazo;
+            }
+            reemplazo.izq=auxiliar.izq;
+        }
+        return true;
+    }
+    
+    public nodoA obtenerReemplazo(nodoA nodo){
+        nodoA reemplazoPadre=nodo;
+        nodoA remplazo = nodo;
+        nodoA aux = nodo.der;
+        while(aux!=null){
+            reemplazoPadre=remplazo;
+            remplazo=aux;
+            aux=aux.izq;
+        }
+        if (remplazo!=nodo.der) {
+            reemplazoPadre.izq=remplazo.der;
+            remplazo.der=nodo.der;
+        }
+        return remplazo;
+    }
 }
