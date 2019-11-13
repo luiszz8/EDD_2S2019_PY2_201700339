@@ -171,4 +171,14 @@ public class Tabla{
             return null;
         }
     }
+    public boolean existe(String nombre){
+        for (int i = 0; i < tablahash.length; i++) {
+            if (tablahash[i]!=null) {
+                if (tablahash[i].nombre.equals(nombre)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

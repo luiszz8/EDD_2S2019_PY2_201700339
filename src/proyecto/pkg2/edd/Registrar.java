@@ -95,26 +95,30 @@ public class Registrar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (jPasswordField1.getText().length()>7) {
-            try {
-                MessageDigest md = MessageDigest.getInstance("SHA-256");
-                md.update(jPasswordField1.getText().getBytes());
-                byte[] digest = md.digest();
-                StringBuffer sb = new StringBuffer();
-                for (byte b : digest){
-                    sb.append(String.format("%02x", b & 0xff));
+        if (tablaha.existe(jTextField1.getText())) {
+            if (jPasswordField1.getText().length()>7) {
+                try {
+                    MessageDigest md = MessageDigest.getInstance("SHA-256");
+                    md.update(jPasswordField1.getText().getBytes());
+                    byte[] digest = md.digest();
+                    StringBuffer sb = new StringBuffer();
+                    for (byte b : digest){
+                        sb.append(String.format("%02x", b & 0xff));
+                    }
+                    //System.out.println(sb.toString());
+                    tablaha.Insertar(jTextField1.getText(), sb.toString());
+                    InicioSesion ini=new InicioSesion();
+                    ini.setVisible(true);
+                    ini.setLocationRelativeTo(null);
+                    dispose();
+                } catch (NoSuchAlgorithmException ex) {
+                    Logger.getLogger(Registrar.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                //System.out.println(sb.toString());
-                tablaha.Insertar(jTextField1.getText(), sb.toString());
-                InicioSesion ini=new InicioSesion();
-                ini.setVisible(true);
-                ini.setLocationRelativeTo(null);
-                dispose();
-            } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(Registrar.class.getName()).log(Level.SEVERE, null, ex);
+            }else{
+                JOptionPane.showMessageDialog(null, "La contraseña debe ser al menos 8 caracteres");
             }
         }else{
-            JOptionPane.showMessageDialog(null, "La contraseña debe ser al menos 8 caracteres");
+            JOptionPane.showMessageDialog(null, "El usuario ya existe");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

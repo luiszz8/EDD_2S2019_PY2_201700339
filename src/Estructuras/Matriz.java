@@ -317,4 +317,8 @@ public class Matriz {
     public void borrar(nodoM padre,String nombre){
         System.out.println(padre.arbol.eliminar(nombre));
     }
+    
+    public String contenidoA(nodoM padre,String nombre){
+        return padre.arbol.contenido(padre.arbol.raiz, nombre);
+    }
 }

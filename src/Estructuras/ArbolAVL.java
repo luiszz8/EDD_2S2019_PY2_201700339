@@ -234,4 +234,16 @@ public class ArbolAVL {
         }
         return remplazo;
     }
+    
+    public String contenido(nodoA tem,String nombre){
+        String datos="";
+        if(tem!=null){
+            datos= datos+contenido(tem.izq,nombre);
+            if (tem.contenido.nombre.equals(nombre)) {
+                return tem.contenido.contenido;
+            }
+            datos= datos+contenido(tem.der,nombre);
+        }
+        return datos;
+    }
 }
