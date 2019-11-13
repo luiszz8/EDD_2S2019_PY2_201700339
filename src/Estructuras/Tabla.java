@@ -14,19 +14,25 @@ import javax.swing.JOptionPane;
 class nodoH{
     public String nombre;
     public String contrasena;
+    public Matriz propia;
     
     public nodoH(){
         this.nombre="";
-        this.contrasena=""; 
+        this.contrasena="";
+        this.propia = new Matriz();
     }
 }
 public class Tabla{
-    nodoH[] tablahash;
+    public nodoH[] tablahash;
     public Tabla(){
         this.tablahash = new nodoH[7];
     }
+    public int tam(){
+        return tablahash.length;
+    } 
+    
     int funcion(String nombre){
-        char[] abc ={'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z'};
+        char[] abc ={'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z','1','2','3','4','5','6','7','8','9','0'};
         int valor=0;
         for (int i = 0; i < nombre.length(); i++) {
             for (int j = 0; j < abc.length; j++) {
@@ -145,5 +151,24 @@ public class Tabla{
                 System.out.println("null");
             }
         }*/
+    }
+    
+    public Matriz raiz(int lugar,String nombre,String contra){
+        if (tablahash[lugar]!=null) {
+            if (this.tablahash[lugar].nombre.equals(nombre) && this.tablahash[lugar].contrasena.equals(contra)) {
+                return tablahash[lugar].propia;
+            }else{
+                for (int i = 0; i < tablahash.length; i++) {
+                    if (tablahash[i]!=null) {
+                        if (this.tablahash[i].nombre.equals(nombre) && this.tablahash[i].contrasena.equals(contra)) {
+                            return tablahash[i].propia;
+                        }
+                    }
+                }
+                return null;
+            }
+        }else{
+            return null;
+        }
     }
 }

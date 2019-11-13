@@ -6,6 +6,8 @@
 package proyecto.pkg2.edd;
 
 import Estructuras.Tabla;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 
 
@@ -18,8 +20,15 @@ public class Proyecto2EDD {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        tablaha.Insertar("a", "fasf");
+    public static void main(String[] args) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update("admin".getBytes());
+        byte[] digest = md.digest();
+        StringBuffer sb = new StringBuffer();
+        for (byte b : digest){
+            sb.append(String.format("%02x", b & 0xff));
+        }
+        tablaha.Insertar("admin", sb.toString());
         InicioSesion sesion=new InicioSesion();
         sesion.setVisible(true);
         sesion.setLocationRelativeTo(null);

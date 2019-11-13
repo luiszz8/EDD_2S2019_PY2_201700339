@@ -10,7 +10,7 @@ package proyecto.pkg2.edd;
  * @author Luis
  */
 public class Carpeta {
-    public String nombre, time;
+    public String nombre, time,ruta;
 
     public Carpeta(String nombre, String time) {
         this.nombre = nombre;

@@ -5,6 +5,11 @@
  */
 package Estructuras;
 
+import static Estructuras.nodoM.ax;
+import static Estructuras.nodoM.ay;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import proyecto.pkg2.edd.Carpeta;
 
 /**
@@ -12,10 +17,23 @@ import proyecto.pkg2.edd.Carpeta;
  * @author Luis
  */
 class nodoM{
-    nodoM ant,sig,arriba,abajo;
-    int x,y;
-    Carpeta carpeta;
-    public nodoM(int x, int y,Carpeta carpeta){
+    public nodoM ant,sig,arriba,abajo;
+    public static int ax=-1,ay=-1;
+    public int x,y;
+    public Carpeta carpeta;
+    public nodoM padre;
+    public nodoM(Carpeta carpeta,nodoM padre){
+        ant = null;
+        sig = null;
+        arriba = null;
+        abajo = null;
+        x=ax;
+        y=ay;
+        this.carpeta= carpeta;
+        this.padre= padre;
+    }
+    
+    public nodoM(Carpeta carpeta,nodoM padre,int x,int y){
         ant = null;
         sig = null;
         arriba = null;
@@ -23,13 +41,28 @@ class nodoM{
         this.x=x;
         this.y=y;
         this.carpeta= carpeta;
+        this.padre= padre;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }
 public class Matriz {
-    nodoM raiz;
+    public nodoM raiz;
 
     public Matriz() {
-        raiz = new nodoM(-1,-1,new Carpeta("raiz","time"));
+        Date date = new Date();
+        DateFormat hourdateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+        String time = "Hora y fecha: " + hourdateFormat.format(date);
+        raiz = new nodoM(new Carpeta("raiz",time),null);
+        raiz.carpeta.ruta="/";
+        this.crear_columna(0,"/");
+        this.crear_fila(0,"/");
     }
     
     public nodoM buscar_fila(int y){
@@ -41,6 +74,18 @@ public class Matriz {
             tem=tem.abajo;
         }
         return null;
+    }
+    
+    public int buscar_fila(String y){
+        nodoM tem = raiz;
+        while(tem!= null){
+            if(tem.carpeta.nombre.equals(y)){
+                System.out.println("regresa esto");
+                return tem.y;
+            }
+            tem=tem.abajo;
+        }
+        return 0;
     }
     
     public nodoM buscar_columna(int x){
@@ -113,30 +158,36 @@ public class Matriz {
         return nuevo;
     }
     
-    public nodoM crear_columna(int x){
+    public nodoM crear_columna(int x,String nombre){
         nodoM cabeza_c = raiz;
-        nodoM columna = this.insertar_ordenado_columna(new nodoM(x,-1,new Carpeta("Col","time")), cabeza_c);
+        ax+=1;
+        nodoM columna = this.insertar_ordenado_columna(new nodoM(new Carpeta(nombre,"time"),null,ax,-1), cabeza_c);
         return columna;
     }
     
-    public nodoM crear_fila(int y){
+    public nodoM crear_fila(int y,String nombre){
         nodoM cabeza_f = raiz;
-        nodoM fila = this.insertar_ordenado_fila(new nodoM(-1,y,new Carpeta("Fil","time")), cabeza_f);
+        ay+=1;
+        nodoM fila = this.insertar_ordenado_fila(new nodoM(new Carpeta(nombre,"time"),null,-1,ay), cabeza_f);
         return fila;
     }
     
-    public void insertar(int x,int y,Carpeta carpeta){
-        nodoM nuevo = new nodoM(x,y,carpeta);
-        nodoM nodoC = this.buscar_columna(x);
-        nodoM nodoF = this.buscar_fila(y);
-        if(nodoC==null && nodoF==null){
-            nodoC = this.crear_columna(x);
-            nodoF = this.crear_fila(y);
+    public void insertar(Carpeta carpeta,int p){
+        nodoM nodoF = this.buscar_fila(p);
+        nodoM nuevo = new nodoM(carpeta,nodoF);
+        //nodoM nodoC = this.buscar_columna(nuevo.x);
+        
+        /*if(nodoC==null && nodoF==null){
+            nodoC = this.crear_columna(nuevo.x);
+            nodoF = this.crear_fila(nuevo.x);
             nuevo = this.insertar_ordenado_columna(nuevo, nodoF);
             nuevo = this.insertar_ordenado_fila(nuevo, nodoC);
             return;
-        }else if(nodoC==null && nodoF!= null){
-            nodoC = this.buscar_columna(x);
+        }else 
+        if(nodoC==null && nodoF!= null){
+            //Creando cabeceras
+            nodoC = this.crear_columna(nuevo.x,carpeta.nombre);
+            this.crear_fila(nuevo.y,carpeta.nombre);
             nuevo = this.insertar_ordenado_columna(nuevo, nodoF);
             nuevo = this.insertar_ordenado_fila(nuevo, nodoC);
             return;
@@ -148,6 +199,109 @@ public class Matriz {
         }else if(nodoC!=null && nodoF!=null){
             nuevo = this.insertar_ordenado_columna(nuevo, nodoF);
             nuevo = this.insertar_ordenado_fila(nuevo, nodoC);
+        }*/
+        nodoM nodoC = this.crear_columna(nuevo.x,carpeta.nombre);
+        this.crear_fila(nuevo.y,carpeta.nombre);
+        System.out.println(nuevo.x);
+        System.out.println(nodoF.x);
+        nuevo = this.insertar_ordenado_columna(nuevo, nodoF);
+        nuevo = this.insertar_ordenado_fila(nuevo, nodoC);
+        if (nodoF.carpeta.nombre.equals("/")) {
+            nuevo.carpeta.ruta=nodoF.carpeta.nombre+nuevo.carpeta.nombre;
+        }else{
+            nuevo.carpeta.ruta=nodoF.carpeta.nombre+"/"+nuevo.carpeta.nombre;
         }
+        
+    }
+    
+    public void mostrar(){
+        nodoM tem = raiz;
+        nodoM tem2 = raiz;
+        while(tem2!=null){
+            while(tem!=null){
+                System.out.print("->"+tem.carpeta.nombre);
+                tem=tem.sig;
+            }
+            tem2=tem2.abajo;
+            tem= tem2;
+            System.out.println(" ");
+        }
+    }
+    
+    public String nombresC(String padre){
+        nodoM tem = raiz;
+        nodoM tem2 = raiz;
+        String supre="";
+        while(tem2!=null){
+            while(tem!=null){
+                if (tem2.carpeta.nombre.equals(padre)&&tem.x!=-1) {
+                    supre=supre+tem.carpeta.nombre+";";
+                }
+                tem=tem.sig;
+            }
+            tem2=tem2.abajo;
+            tem= tem2;
+        }
+        System.out.println("esto");
+        System.out.println(supre);
+        return supre;
+    }
+    
+    public void borrar(String padre){
+        int f=buscar_fila(padre);
+        nodoM cabeza=buscar_fila(f);
+        nodoM tem= cabeza.sig;
+        while(tem!=null){
+            if (tem.arriba.sig!=null) {
+                tem.arriba.ant.sig=tem.arriba.sig;
+                tem.arriba.sig.ant=tem.arriba.ant;
+                nodoM auxF=buscar_fila(tem.arriba.x);
+                if (auxF.abajo!=null) {
+                    auxF.arriba.abajo=auxF.abajo;
+                    auxF.abajo.arriba=auxF.arriba;
+                }else{
+                    auxF.arriba.abajo=null;
+                }
+            }else{
+                tem.arriba.ant.sig=null;
+                nodoM auxF=buscar_fila(tem.arriba.x);
+                if (auxF.abajo!=null) {
+                    auxF.arriba.abajo=auxF.abajo;
+                    auxF.abajo.arriba=auxF.arriba;
+                }else{
+                    auxF.arriba.abajo=null;
+                }
+            }
+            tem=tem.sig;
+        }
+        if (cabeza.abajo!=null) {
+            cabeza.arriba.abajo=cabeza.abajo;
+            cabeza.abajo.arriba=cabeza.arriba;
+        }else{
+            cabeza.arriba.abajo=null;
+        }
+        nodoM cabezaC=buscar_columna(f);
+        if (cabezaC.abajo.sig!=null) {
+            cabezaC.abajo.ant.sig=cabezaC.abajo.sig;
+            cabezaC.abajo.sig.ant=cabezaC.abajo.ant;
+        }else{
+            cabezaC.abajo.ant.sig=null;
+        }
+        if (cabezaC.sig!=null) {
+            cabezaC.ant.sig=cabezaC.sig;
+            cabezaC.sig.ant=cabezaC.ant;
+        }else{
+            cabezaC.ant.sig=null;
+        }
+        mostrar();
+    }
+    public  void modificar(String padre,String nuevo){
+        int f=buscar_fila(padre);
+        nodoM cabeza=buscar_fila(f);
+        nodoM cabezaC=buscar_columna(f);
+        cabeza.carpeta.nombre=nuevo;
+        cabezaC.carpeta.nombre=nuevo;
+        cabezaC.abajo.carpeta.nombre=nuevo;
+        mostrar();
     }
 }
