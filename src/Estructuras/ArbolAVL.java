@@ -5,6 +5,7 @@
  */
 package Estructuras;
 
+import javax.swing.JOptionPane;
 import proyecto.pkg2.edd.Archivo;
 
 /**
@@ -94,35 +95,48 @@ public class ArbolAVL {
     
     public void insertar(String nombre,String contenido, String extension, String time){
         nodoA nuevo = new nodoA(new Archivo(nombre,contenido,extension,time));
-        if(raiz == null){
-            raiz = nuevo;
-        }else{
-            raiz = insertarAVL(nuevo,raiz);
+        int resp=0;
+        if (raiz!=null) {
+            if (existe(raiz,nombre+"."+extension).equals("")) {
+            
+            }else{
+                resp = JOptionPane.showConfirmDialog(null, "¿Desea reescribir el archivo?");
+                if (resp==0) {
+                    System.out.println(eliminar(nombre+"."+extension));
+                }
+            }
+        }
+        if (resp==0) {
+            if(raiz == null){
+                raiz = nuevo;
+            }else{
+                raiz = insertarAVL(nuevo,raiz);
+            }
         }
     }
     
     public nodoA insertarAVL(nodoA nuevo, nodoA sub){
         nodoA padre = sub;
-        if(nuevo.contenido.nombre.compareTo(sub.contenido.nombre)<0){
+        if((nuevo.contenido.nombre+"."+nuevo.contenido.extension).compareTo(sub.contenido.nombre+"."+sub.contenido.extension)<0){
             if(sub.izq == null){
                 sub.izq = nuevo;
             }else{
                 sub.izq = insertarAVL(nuevo, sub.izq);
                 if(obtenerAltura(sub.izq)-obtenerAltura(sub.der)==2){
-                    if(nuevo.contenido.nombre.compareTo(sub.izq.contenido.nombre)<0){
+                    if((nuevo.contenido.nombre+"."+nuevo.contenido.extension).compareTo(sub.izq.contenido.nombre+"."+sub.izq.contenido.extension)<0){
                         padre = rotar_izq(sub);
                     }else{
                         padre = rotar_doble_izq(sub);
                     }
                 }
             }
-        }else if(nuevo.contenido.nombre.compareTo(sub.contenido.nombre)>0){
+        }else if((nuevo.contenido.nombre+"."+nuevo.contenido.extension).compareTo(sub.contenido.nombre+"."+sub.contenido.extension)>0){
             if(sub.der == null){
                 sub.der = nuevo;
             }else{
                 sub.der = insertarAVL(nuevo, sub.der);
                 if(obtenerAltura(sub.der)-obtenerAltura(sub.izq)==2){
-                    if(nuevo.contenido.nombre.compareTo(sub.der.contenido.nombre)>0){
+                    if((nuevo.contenido.nombre+"."+nuevo.contenido.extension).compareTo(sub.der.contenido.nombre+"."+sub.der.contenido.extension)>0){
                         padre = rotar_der(sub);
                     }else{
                         padre = rotar_doble_der(sub);
@@ -157,7 +171,7 @@ public class ArbolAVL {
             if (tem.izq!=null) {
                 datos=datos+nombresA(tem.izq);
             }
-            datos=datos+tem.contenido.nombre+";";
+            datos=datos+tem.contenido.nombre+"."+tem.contenido.extension+";";
             if (tem.der!=null) {
                 datos=datos+nombresA(tem.der);
             }
@@ -168,9 +182,9 @@ public class ArbolAVL {
         nodoA auxiliar = raiz;
         nodoA padre = raiz;
         boolean esHizq = true;
-        while(!auxiliar.contenido.nombre.equals(nombre)){
+        while(!(auxiliar.contenido.nombre+"."+auxiliar.contenido.extension).equals(nombre)){
             padre=auxiliar;
-            if (auxiliar.contenido.nombre.compareTo(nombre)>0) {
+            if ((auxiliar.contenido.nombre+"."+auxiliar.contenido.extension).compareTo(nombre)>0) {
                 esHizq = true;
                 auxiliar=auxiliar.izq;
             }else{
@@ -216,6 +230,7 @@ public class ArbolAVL {
             }
             reemplazo.izq=auxiliar.izq;
         }
+        mos(raiz);
         return true;
     }
     
@@ -239,8 +254,19 @@ public class ArbolAVL {
         String datos="";
         if(tem!=null){
             datos= datos+contenido(tem.izq,nombre);
-            if (tem.contenido.nombre.equals(nombre)) {
+            if ((tem.contenido.nombre+"."+tem.contenido.extension).equals(nombre)) {
                 return tem.contenido.contenido;
+            }
+            datos= datos+contenido(tem.der,nombre);
+        }
+        return datos;
+    }
+    public String existe(nodoA tem,String nombre){
+        String datos="";
+        if(tem!=null){
+            datos= datos+contenido(tem.izq,nombre);
+            if ((tem.contenido.nombre+"."+tem.contenido.extension).equals(nombre)) {
+                return tem.contenido.nombre;
             }
             datos= datos+contenido(tem.der,nombre);
         }

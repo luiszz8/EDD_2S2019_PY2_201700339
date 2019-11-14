@@ -10,6 +10,7 @@ import static Estructuras.nodoM.ay;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import proyecto.pkg2.edd.Carpeta;
 
 /**
@@ -309,6 +310,7 @@ public class Matriz {
     }
     public void agregarAVL(String nombre,String contenido, String extension, String time,nodoM padre){
         padre.arbol.insertar(nombre, contenido, extension, time);
+        padre.arbol.mos(padre.arbol.raiz);
     }
     
     public String nombresA(nodoM padre){
@@ -320,5 +322,18 @@ public class Matriz {
     
     public String contenidoA(nodoM padre,String nombre){
         return padre.arbol.contenido(padre.arbol.raiz, nombre);
+    }
+    public boolean existe(nodoM padre,String nombre){
+        int resp=1;
+        if (padre.arbol.existe(padre.arbol.raiz, nombre).equals("")) {
+            return true;
+        }else{
+            resp = JOptionPane.showConfirmDialog(null, "¿Desea reescribir el archivo?");
+        }
+        if (resp==0) {
+            return true;
+        }else{
+            return false;
+        }
     }
 }
