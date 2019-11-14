@@ -272,4 +272,15 @@ public class ArbolAVL {
         }
         return datos;
     }
+    public String todo(nodoA tem,String nombre){
+        String datos="";
+        if(tem!=null){
+            datos= datos+contenido(tem.izq,nombre);
+            if ((tem.contenido.nombre+"."+tem.contenido.extension).equals(nombre)) {
+                return tem.contenido.nombre+";"+tem.contenido.contenido+";"+tem.contenido.extension+";"+tem.contenido.time;
+            }
+            datos= datos+contenido(tem.der,nombre);
+        }
+        return datos;
+    }
 }

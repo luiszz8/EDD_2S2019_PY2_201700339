@@ -336,4 +336,7 @@ public class Matriz {
             return false;
         }
     }
+    public String datos(nodoM padre,String nombre){
+        return padre.arbol.todo(padre.arbol.raiz, nombre);
+    }
 }

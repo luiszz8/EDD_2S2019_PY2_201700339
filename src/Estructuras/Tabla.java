@@ -181,4 +181,14 @@ public class Tabla{
         }
         return true;
     }
+    public Matriz recibir(String nombre){
+        for (int i = 0; i < tablahash.length; i++) {
+            if (tablahash[i]!=null) {
+                if (tablahash[i].nombre.equals(nombre)) {
+                    return tablahash[i].propia;
+                }
+            }
+        }
+        return null;
+    }
 }

@@ -18,6 +18,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import static proyecto.pkg2.edd.Proyecto2EDD.tablaha;
 
 /**
  *
@@ -70,6 +71,7 @@ public class Ventana extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jButton12 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
+        jTextField2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -252,6 +254,8 @@ public class Ventana extends javax.swing.JFrame {
             }
         });
 
+        jTextField2.setText("Ingrese usuario");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -259,7 +263,10 @@ public class Ventana extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton12)
-                    .addComponent(jButton13))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jButton13)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -267,7 +274,9 @@ public class Ventana extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jButton12)
                 .addGap(18, 18, 18)
-                .addComponent(jButton13)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton13)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 15, Short.MAX_VALUE))
         );
 
@@ -522,7 +531,31 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        
+        if (tablaha.recibir(jTextField2.getText())!=null) {
+            int contador=0;
+            while(corX>100){
+                corX=corX-101;
+                contador+=1;
+            }
+            while(corY>50){
+                corY=corY-60;
+                contador+=6;
+            }
+            contador=contador-cantC;
+            String sus=auxA[contador];
+            if (sus.equals("/")||sus.equals("raiz")) {
+
+            }else{
+                //System.out.println(sus);
+                int p=aux.buscar_fila(nombreP);
+                String nombre=aux.datos(aux.buscar_fila(p), sus);
+                String part[]=nombre.split(";");
+                int aux2=tablaha.recibir(jTextField2.getText()).buscar_fila("/");
+                tablaha.recibir(jTextField2.getText()).agregarAVL(part[0], part[1], part[2], part[3], tablaha.recibir(jTextField2.getText()).buscar_fila(aux2));
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Usuario no existe en el sistema");
+        }
     }//GEN-LAST:event_jButton13ActionPerformed
 
     /**
@@ -688,5 +721,6 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
