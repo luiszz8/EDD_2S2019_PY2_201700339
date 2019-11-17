@@ -7,6 +7,7 @@ package Estructuras;
 
 import static Estructuras.nodoM.ax;
 import static Estructuras.nodoM.ay;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -308,8 +309,8 @@ public class Matriz {
         cabezaC.abajo.carpeta.nombre=nuevo;
         mostrar();
     }
-    public void agregarAVL(String nombre,String contenido, String extension, String time,nodoM padre){
-        padre.arbol.insertar(nombre, contenido, extension, time);
+    public void agregarAVL(String nombre,String contenido, String extension, String time,nodoM padre,String prop){
+        padre.arbol.insertar(nombre, contenido, extension, time,prop);
         padre.arbol.mos(padre.arbol.raiz);
     }
     
@@ -338,5 +339,8 @@ public class Matriz {
     }
     public String datos(nodoM padre,String nombre){
         return padre.arbol.todo(padre.arbol.raiz, nombre);
+    }
+    public  void grafo(nodoM padre) throws IOException{
+        padre.arbol.grafo();
     }
 }

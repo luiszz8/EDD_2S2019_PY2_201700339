@@ -5,7 +5,13 @@
  */
 package Estructuras;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import javax.swing.JOptionPane;
+import proyecto.pkg2.edd.GraphvizJava;
+import static proyecto.pkg2.edd.Proyecto2EDD.bitacora;
 
 /**
  *
@@ -97,6 +103,7 @@ public class Tabla{
         estudiante.contrasena=contra;
         int tope= tablahash.length;
         if(porcentaje(tope, tablahash)==1){
+            bitacora.agregar(nombre, "usuario "+nombre+" agregado");
             //System.out.println("No ha llegado al porcentaje");
             int lugar=lugar(funcion(estudiante.nombre), tope);
             if(tablahash[lugar]==null){
@@ -131,19 +138,61 @@ public class Tabla{
         JOptionPane.showMessageDialog(null, "Usuario ingresado");
     }
     
+    public void InsertarAux(String nombre,String contra){
+        nodoH estudiante=new nodoH();
+        estudiante.nombre=nombre;
+        estudiante.contrasena=contra;
+        int tope= tablahash.length;
+        if(porcentaje(tope, tablahash)==1){
+            bitacora.agregar(nombre, "usuario "+nombre+" agregado");
+            //System.out.println("No ha llegado al porcentaje");
+            int lugar=lugar(funcion(estudiante.nombre), tope);
+            if(tablahash[lugar]==null){
+                tablahash[lugar]=estudiante;
+                System.out.println("ID: "+estudiante.nombre +"  Posicion : "+lugar);
+            }else{
+                if (tablahash[lugar].nombre==nombre) {
+                    JOptionPane.showMessageDialog(null, "Usuario ya existe");
+                    return;
+                }
+                double colision=1;
+                System.out.println("Hubo colision en "+lugar);
+                
+                while(true){
+                    int numero=lugar+(int)Math.pow(colision, 2);
+                    while(numero>tablahash.length-1){
+                        numero = numero - tope;
+                    }
+                    if(tablahash[numero]==null){                        
+                        tablahash[numero]=estudiante;
+                        System.out.println(estudiante.nombre+" Se inserto en "+numero);                        
+                        break;
+                    }else{
+                        colision++;
+                    }
+                }
+            }            
+        }else{
+            System.out.println("************************************************Llego al 75%*******************************************************");
+            Cambio(tope,nombre,contra,tablahash);
+        }
+    }
+    
     void Cambio(int tope,String nombre,String contra, nodoH[] tabla){
         //System.out.println(Esprimo(tope));
         nodoH[] nuevatabla=new nodoH[Esprimo(tope)];
-        for (int i = 0; i <tabla.length; i++) {
-            if(tabla[i]==null){
+        nodoH[] aux=tabla;
+        this.tablahash = nuevatabla;
+        for (int i = 0; i <aux.length; i++) {
+            if(aux[i]==null){
                 //System.out.println("No ingresa nada");
             }else{
-                nuevatabla[i]=tabla[i];
+                InsertarAux(aux[i].nombre,aux[i].contrasena);
             }
         }
-        this.tablahash = nuevatabla;
+        
         tope=tablahash.length;
-        Insertar(nombre,contra);
+        InsertarAux(nombre,contra);
         /*for (int i = 0; i < tablahash.length; i++) {
             if (tablahash[i]!=null) {
                 System.out.println(tablahash[i].nombre);
@@ -190,5 +239,42 @@ public class Tabla{
             }
         }
         return null;
+    }
+    public void graficar(){
+        try {
+            String ruta = "Tabla.dot";
+            String contenido = "digraph G { \n";
+            contenido= contenido+" node [shape=record]; \n";
+            contenido= contenido+" node1[label = \"{ Usuarios del Sistema";
+            for (int i = 0; i < tablahash.length; i++) {
+                if (i!=0) {
+                    if (tablahash[i]!=null) {
+                        contenido=contenido+"|"+i+") Nombre: "+tablahash[i].nombre+" Contrasena: "+tablahash[i].contrasena;
+                    }else{
+                        contenido=contenido+"|"+i+")";
+                    }
+                }else{
+                    if (tablahash[i]!=null) {
+                        contenido=contenido+"|"+i+") Nombre: "+tablahash[i].nombre+" Contrasena: "+tablahash[i].contrasena;
+                    }else{
+                        contenido=contenido+"|"+i+")";
+                    }
+                }
+            }
+            contenido = contenido + "}\"] \n}";
+            File file = new File(ruta);
+            // Si el archivo no existe es creado
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fw = new FileWriter(file);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(contenido);
+            bw.close();
+            //System.out.println(contenido);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        GraphvizJava grafo=new GraphvizJava("Tabla.dot","src/Imagenes/hash.png");
     }
 }

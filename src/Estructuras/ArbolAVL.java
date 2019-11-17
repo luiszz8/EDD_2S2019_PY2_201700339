@@ -5,8 +5,13 @@
  */
 package Estructuras;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 import proyecto.pkg2.edd.Archivo;
+import proyecto.pkg2.edd.GraphvizJava;
 
 /**
  *
@@ -93,8 +98,8 @@ public class ArbolAVL {
         }
     }
     
-    public void insertar(String nombre,String contenido, String extension, String time){
-        nodoA nuevo = new nodoA(new Archivo(nombre,contenido,extension,time));
+    public void insertar(String nombre,String contenido, String extension, String time,String prop){
+        nodoA nuevo = new nodoA(new Archivo(nombre,contenido,extension,time,prop));
         int resp=0;
         if (raiz!=null) {
             if (existe(raiz,nombre+"."+extension).equals("")) {
@@ -277,9 +282,42 @@ public class ArbolAVL {
         if(tem!=null){
             datos= datos+contenido(tem.izq,nombre);
             if ((tem.contenido.nombre+"."+tem.contenido.extension).equals(nombre)) {
-                return tem.contenido.nombre+";"+tem.contenido.contenido+";"+tem.contenido.extension+";"+tem.contenido.time;
+                return tem.contenido.nombre+";"+tem.contenido.contenido+";"+tem.contenido.extension+";"+tem.contenido.time+";"+tem.contenido.prop;
+                
             }
             datos= datos+contenido(tem.der,nombre);
+        }
+        return datos;
+    }
+    public void grafo() throws IOException{
+        String ruta = "Arbol.dot";
+        String datos = "digraph BST {";
+        datos=datos+grafo(raiz);
+        datos= datos +"}";
+        File file = new File(ruta);
+            // Si el archivo no existe es creado
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fw = new FileWriter(file);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(datos);
+            bw.close();
+            GraphvizJava grafo=new GraphvizJava("Arbol.dot","src/Imagenes/arbol.png");
+    }
+    public String grafo(nodoA nodo){
+        String datos ="";
+        if (nodo!=null) {
+            if (nodo.izq!=null){ 
+                datos=datos+ "\"Nombre: " +nodo.contenido.nombre +"."+nodo.contenido.extension +"\\n Contenido: "+nodo.contenido.contenido+"\\n FE: "+(this.obtenerAltura(nodo.der)-this.obtenerAltura(nodo.izq))+"\\n Altura: "+nodo.fe+"\\n Time: "+nodo.contenido.time+"\\n Propiedad: "+nodo.contenido.prop+"\"";
+                datos = datos + "->" + "\"Nombre: " +nodo.izq.contenido.nombre +"."+nodo.izq.contenido.extension +"\\n Contenido: "+nodo.izq.contenido.contenido+"\\n FE: "+(this.obtenerAltura(nodo.izq.der)-this.obtenerAltura(nodo.izq.izq))+"\\n Altura: "+nodo.izq.fe+"\\n Time: "+nodo.izq.contenido.time+"\\n Propiedad: "+nodo.izq.contenido.prop+"\""+ ";";
+            }
+            if (nodo.der!=null){ 
+                datos=datos+ "\"Nombre: " +nodo.contenido.nombre +"."+nodo.contenido.extension +"\\n Contenido: "+nodo.contenido.contenido+"\\n FE: "+(this.obtenerAltura(nodo.der)-this.obtenerAltura(nodo.izq))+"\\n Altura: "+nodo.fe+"\\n Time: "+nodo.contenido.time+"\\n Propiedad: "+nodo.contenido.prop+"\"";
+                datos = datos + "->" + "\"Nombre: " +nodo.der.contenido.nombre +"."+nodo.der.contenido.extension +"\\n Contenido: "+nodo.der.contenido.contenido+"\\n FE: "+(this.obtenerAltura(nodo.der.der)-this.obtenerAltura(nodo.der.izq))+"\\n Altura: "+nodo.der.fe+"\\n Time: "+nodo.der.contenido.time+"\\n Propiedad: "+nodo.der.contenido.prop+"\""+ ";";
+            }
+            datos=datos+grafo(nodo.izq);
+            datos=datos+grafo(nodo.der);
         }
         return datos;
     }

@@ -5,6 +5,7 @@
  */
 package proyecto.pkg2.edd;
 
+import Estructuras.Pila;
 import Estructuras.Tabla;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -17,6 +18,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Proyecto2EDD {
     public static Tabla tablaha=new Tabla();
+    public static Pila bitacora= new Pila();
     /**
      * @param args the command line arguments
      */

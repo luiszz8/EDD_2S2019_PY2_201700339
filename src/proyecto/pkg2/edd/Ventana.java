@@ -6,18 +6,30 @@
 package proyecto.pkg2.edd;
 
 import Estructuras.Matriz;
+import Reportes.ReporteArbol;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import static proyecto.pkg2.edd.Proyecto2EDD.bitacora;
 import static proyecto.pkg2.edd.Proyecto2EDD.tablaha;
 
 /**
@@ -26,18 +38,19 @@ import static proyecto.pkg2.edd.Proyecto2EDD.tablaha;
  */
 public class Ventana extends javax.swing.JFrame {
     Matriz aux;
-    public String nombreP,carpetaaux;
+    public String nombreP,carpetaaux,usuario;
     public String[] auxC,auxA;
     public int corX,corY,cantC;
     /**
      * Creates new form Ventana
      */
-    public Ventana(Matriz raiz) {
+    public Ventana(Matriz raiz,String nombre) {
         initComponents();
         aux=raiz;
         nombreP="/";
         jPanel3.setLayout(null);
         pintarCarpetas(nombreP);
+        this.usuario=nombre;
     }
 
     /**
@@ -62,6 +75,7 @@ public class Ventana extends javax.swing.JFrame {
         jButton8 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jButton11 = new javax.swing.JButton();
+        jButton14 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
@@ -115,10 +129,10 @@ public class Ventana extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -173,6 +187,13 @@ public class Ventana extends javax.swing.JFrame {
             }
         });
 
+        jButton14.setText("Graficar");
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -189,7 +210,8 @@ public class Ventana extends javax.swing.JFrame {
                         .addGap(24, 24, 24)
                         .addComponent(jButton11))
                     .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton14))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -200,13 +222,15 @@ public class Ventana extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton5)
                     .addComponent(jButton11))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton6)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton7)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton8)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton14)
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         jTextField1.setText("/");
@@ -363,8 +387,9 @@ public class Ventana extends javax.swing.JFrame {
             String time = "Hora y fecha: " + hourdateFormat.format(date);
             String[] parte = ArchivoNuevo.split("\\.");
             int p=aux.buscar_fila(nombreP);
-            aux.agregarAVL(parte[0], jTextArea1.getText(), parte[1], time,aux.buscar_fila(p));
+            aux.agregarAVL(parte[0], jTextArea1.getText(), parte[1], time,aux.buscar_fila(p),usuario);
             pintarCarpetas(nombreP);
+            bitacora.agregar(usuario, "Se  modifico el archivo "+ sus +"a "+ArchivoNuevo);
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
@@ -376,6 +401,7 @@ public class Ventana extends javax.swing.JFrame {
         aux.insertar(new Carpeta(carpetaNueva,time),aux.buscar_fila(nombreP));
         pintarCarpetas(nombreP);
         aux.mostrar();
+        bitacora.agregar(usuario, "Se crea la carpeta" + carpetaNueva);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -416,6 +442,7 @@ public class Ventana extends javax.swing.JFrame {
             aux.borrar(sus);
             jPanel3.removeAll();
             pintarCarpetas(nombreP);
+            bitacora.agregar(usuario, "Se borro la  carpeta "+sus);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -438,6 +465,7 @@ public class Ventana extends javax.swing.JFrame {
             aux.modificar(sus, carpetaNueva);
             jPanel3.removeAll();
             pintarCarpetas(nombreP);
+            bitacora.agregar(usuario, "Se modifico la carpeta "+sus+" a"+ carpetaNueva);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -464,8 +492,9 @@ public class Ventana extends javax.swing.JFrame {
         String time = "Hora y fecha: " + hourdateFormat.format(date);
         String[] parte = ArchivoNuevo.split("\\.");
         int p=aux.buscar_fila(nombreP);
-        aux.agregarAVL(parte[0], jTextArea1.getText(), parte[1], time,aux.buscar_fila(p));
+        aux.agregarAVL(parte[0], jTextArea1.getText(), parte[1], time,aux.buscar_fila(p),usuario);
         pintarCarpetas(nombreP);
+        bitacora.agregar(usuario, "Se creo el archivo "+ArchivoNuevo);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -488,6 +517,7 @@ public class Ventana extends javax.swing.JFrame {
             aux.borrar(aux.buscar_fila(p), sus);
             jPanel3.removeAll();
             pintarCarpetas(nombreP);
+            bitacora.agregar(usuario, "Se elimino el archivo"+ sus);
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
@@ -516,7 +546,27 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
+        JFileChooser nuevo=new JFileChooser();
+        nuevo.showOpenDialog(null);
+        File abrir=null;
+        String ruta="";
+        try{
+            abrir = nuevo.getSelectedFile();
+        }catch(NullPointerException e){
+            JOptionPane.showMessageDialog(null, "Seleccione un archivo .csv");
+        }
+        if (abrir!=null) {
+            if (abrir.getName().endsWith(".csv")) {
+                ruta=abrir.getPath();
+            }else{
+                JOptionPane.showMessageDialog(null, "Seleccione un archivo .csv");
+            }
+        }
+        try {
+            LeerArchivo(ruta);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -551,12 +601,23 @@ public class Ventana extends javax.swing.JFrame {
                 String nombre=aux.datos(aux.buscar_fila(p), sus);
                 String part[]=nombre.split(";");
                 int aux2=tablaha.recibir(jTextField2.getText()).buscar_fila("/");
-                tablaha.recibir(jTextField2.getText()).agregarAVL(part[0], part[1], part[2], part[3], tablaha.recibir(jTextField2.getText()).buscar_fila(aux2));
+                tablaha.recibir(jTextField2.getText()).agregarAVL(part[0], part[1], part[2], part[3], tablaha.recibir(jTextField2.getText()).buscar_fila(aux2),part[4]);
             }
         }else{
             JOptionPane.showMessageDialog(null, "Usuario no existe en el sistema");
         }
     }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        int p=aux.buscar_fila(nombreP);
+        try {
+            aux.grafo(aux.buscar_fila(p));
+            ReporteArbol repA=new ReporteArbol();
+            repA.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton14ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -697,6 +758,47 @@ public class Ventana extends javax.swing.JFrame {
         }
     
     }
+    public String LeerArchivo(String rutaArchivo) throws NoSuchAlgorithmException {
+        try {
+            FileReader fr = new FileReader(rutaArchivo);
+            BufferedReader br = new BufferedReader(fr);
+            String Fila="";
+            String Resultado="";
+            boolean primeraU=false;
+            Fila=br.readLine();
+            if (Fila.split(",",2)[0].equalsIgnoreCase("archivo")) {
+                    primeraU= true;
+            }
+            while((Fila=br.readLine())!=null){
+                if (primeraU) {
+                    Date date = new Date();
+                    DateFormat hourdateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+                    String time = "Hora y fecha: " + hourdateFormat.format(date);
+                    String[] parte = Fila.split(",",2)[0].split("\\.");
+                    int p=aux.buscar_fila(nombreP);
+                    aux.agregarAVL(parte[0], Fila.split(",",2)[1].replace("\"", ""), parte[1], time,aux.buscar_fila(p),usuario);
+                    pintarCarpetas(nombreP);
+                    bitacora.agregar(usuario, "Se creo el archivo "+Fila.split(",",2)[0]);
+                }else{
+                    Date date = new Date();
+                    DateFormat hourdateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+                    String time = "Hora y fecha: " + hourdateFormat.format(date);
+                    String[] parte = Fila.split(",",2)[1].split("\\.");
+                    int p=aux.buscar_fila(nombreP);
+                    aux.agregarAVL(parte[0], Fila.split(",",2)[0].replace("\"", ""), parte[1], time,aux.buscar_fila(p),usuario);
+                    pintarCarpetas(nombreP);
+                    bitacora.agregar(usuario, "Se creo el archivo "+Fila.split(",",2)[1]);
+                }
+            }
+            return Resultado;
+            
+        } catch (FileNotFoundException ex) {
+            return ex.getMessage();
+        } catch (IOException ex) {
+            return ex.getMessage();
+        }
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -704,6 +806,7 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
