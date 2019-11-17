@@ -1,0 +1,39 @@
+digraph G { 
+ node[shape=box]; 
+{rank = same; 
+"id0"[label=" Nombre: raiz \n Time: Hora y fecha: 13:07:13 17/11/2019"]; 
+"id1"[label=" Nombre: / \n Time: time"]; 
+"id2"[label=" Nombre: luis \n Time: time"]; 
+"id3"[label=" Nombre: fox \n Time: time"]; 
+"id4"[label=" Nombre: liliab \n Time: time"]; 
+} 
+{rank = same; 
+"id5"[label=" Nombre: / \n Time: time"]; 
+"id6"[label=" Nombre: //luis \n Time: Hora y fecha: 13:07:34 17/11/2019"]; 
+"id7"[label=" Nombre: //fox \n Time: Hora y fecha: 13:07:45 17/11/2019"]; 
+} 
+{rank = same; 
+"id8"[label=" Nombre: luis \n Time: time"]; 
+"id9"[label=" Nombre: luis/liliab \n Time: Hora y fecha: 13:07:53 17/11/2019"]; 
+} 
+{rank = same; 
+"id10"[label=" Nombre: fox \n Time: time"]; 
+} 
+{rank = same; 
+"id11"[label=" Nombre: liliab \n Time: time"]; 
+} 
+"id0" -> "id1"; 
+"id1" -> "id2"; 
+"id2" -> "id3"; 
+"id3" -> "id4"; 
+"id0" -> "id5"; 
+"id5" -> "id6"; 
+"id6" -> "id7"; 
+"id2" -> "id6"; 
+"id3" -> "id7"; 
+"id5" -> "id8"; 
+"id8" -> "id9"; 
+"id4" -> "id9"; 
+"id8" -> "id10"; 
+"id10" -> "id11"; 
+}

@@ -7,12 +7,16 @@ package Estructuras;
 
 import static Estructuras.nodoM.ax;
 import static Estructuras.nodoM.ay;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import proyecto.pkg2.edd.Carpeta;
+import proyecto.pkg2.edd.GraphvizJava;
 
 /**
  *
@@ -342,5 +346,101 @@ public class Matriz {
     }
     public  void grafo(nodoM padre) throws IOException{
         padre.arbol.grafo();
+    }
+    public void graficar() throws IOException{
+        nodoM temC =raiz;
+        nodoM temF =raiz;
+        int contador=0;
+        String mamadisimo="digraph G { \n node[shape=box]; \n";
+        while(temF!=null){
+            boolean cabeza=true;
+            mamadisimo=mamadisimo+"{rank = same; \n";
+            while(temC!=null){
+                if (temF==raiz) {
+                    mamadisimo=mamadisimo+"\"id"+contador+"\"[label=\" Nombre: "+temC.carpeta.nombre+" \\n Time: "+temC.carpeta.time+"\"]; \n";
+                }else{
+                    if (cabeza) {
+                        mamadisimo=mamadisimo+"\"id"+contador+"\"[label=\" Nombre: "+temC.carpeta.nombre+" \\n Time: "+temC.carpeta.time+"\"]; \n";
+                    }else{
+                        mamadisimo=mamadisimo+"\"id"+contador+"\"[label=\" Nombre: "+temF.carpeta.nombre+"/"+temC.carpeta.nombre+" \\n Time: "+temC.carpeta.time+"\"]; \n";
+                    }
+                }
+                cabeza=false;
+                contador++;
+                temC=temC.sig;
+            }
+            mamadisimo=mamadisimo+"} \n";
+            temF=temF.abajo;
+            temC=temF;
+        }
+        temC=raiz;
+        temF=raiz;
+        nodoM auxR;
+        int aux=0;
+        int auxC=0;
+        int raizC=0;
+        while(temF!=null){
+            while(temC!=null){
+                if (temC.sig!=null) {
+                    mamadisimo=mamadisimo+"\"id"+aux+"\" -> \"id"+(aux+1)+"\"; \n";
+                }
+                if (temC.arriba!=null && temC!=temF) {
+                        auxR=temC.arriba;
+                        while(auxR.ant!=null){
+                            raizC++;
+                            auxR=auxR.ant;
+                        }
+                        mamadisimo=mamadisimo+"\"id"+raizC+"\" -> \"id"+aux+"\"; \n";
+                        raizC=0;
+                }
+                aux=aux+1;
+                temC=temC.sig;
+            }
+            //aux++;
+            temF=temF.abajo;
+            if (temF!=null) {
+                mamadisimo=mamadisimo+"\"id"+auxC+"\" -> \"id"+(aux)+"\"; \n";
+                auxC=aux;
+            }
+            temC=temF;
+        }
+        mamadisimo=mamadisimo+"}";
+        File file = new File("matriz.dot");
+            // Si el archivo no existe es creado
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        FileWriter fw = new FileWriter(file);
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(mamadisimo);
+        bw.close();
+        GraphvizJava grafo=new GraphvizJava("matriz.dot","src/Imagenes/matriz.png");
+    }
+    public void grafoMamador() throws IOException{
+        String supremo="digraph BST {";
+        nodoM temF=raiz;
+        temF=temF.abajo;
+        nodoM temC=temF;
+        while(temF!=null){
+            while(temC!=null){
+                if (temC!=temF) {
+                    supremo=supremo+"\""+temF.carpeta.nombre+"\"->\""+temC.carpeta.nombre+"\";";
+                }
+                temC=temC.sig;
+            }
+            temF=temF.abajo;
+            temC=temF;
+        }
+        supremo=supremo+"}";
+        File file = new File("grafo.dot");
+            // Si el archivo no existe es creado
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        FileWriter fw = new FileWriter(file);
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(supremo);
+        bw.close();
+        GraphvizJava grafo=new GraphvizJava("grafo.dot","src/Imagenes/grafo.png");
     }
 }

@@ -144,7 +144,7 @@ public class Tabla{
         estudiante.contrasena=contra;
         int tope= tablahash.length;
         if(porcentaje(tope, tablahash)==1){
-            bitacora.agregar(nombre, "usuario "+nombre+" agregado");
+            //bitacora.agregar(nombre, "usuario "+nombre+" agregado");
             //System.out.println("No ha llegado al porcentaje");
             int lugar=lugar(funcion(estudiante.nombre), tope);
             if(tablahash[lugar]==null){
@@ -193,6 +193,7 @@ public class Tabla{
         
         tope=tablahash.length;
         InsertarAux(nombre,contra);
+        bitacora.agregar(nombre,"usuario "+nombre+" agregado");
         /*for (int i = 0; i < tablahash.length; i++) {
             if (tablahash[i]!=null) {
                 System.out.println(tablahash[i].nombre);

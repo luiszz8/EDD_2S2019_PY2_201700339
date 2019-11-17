@@ -13,7 +13,7 @@ import javax.swing.JLabel;
  * @author Luis
  */
 public class ReporteArbol extends javax.swing.JFrame {
-
+    static int cont=1;
     /**
      * Creates new form ReporteArbol
      */
@@ -91,9 +91,14 @@ public class ReporteArbol extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         JLabel label2=new JLabel();
-        label2.setIcon(new ImageIcon("./src/Imagenes/arbol.png"));
+        String aux="";
+        for (int i = 0; i < cont; i++) {
+            aux=aux+"./";
+        }
+        label2.setIcon(new ImageIcon(aux+"src/Imagenes/arbol.png"));
         label2.setVisible(true);
         jScrollPane1.setViewportView(label2);
+        cont++;
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

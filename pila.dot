@@ -1,0 +1,4 @@
+digraph G { 
+ node [shape=record]; 
+ node1[label = "{ Bitacora|Usuario: body Time: Hora y fecha: 00:13:24 17/11/2019 Descripcion: usuario body agregado|Usuario: luis Time: Hora y fecha: 00:12:58 17/11/2019 Descripcion: usuario luis agregado|Usuario: admin Time: Hora y fecha: 00:12:34 17/11/2019 Descripcion: usuario admin agregado}"] 
+}

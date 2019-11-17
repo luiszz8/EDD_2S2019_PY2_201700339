@@ -4,9 +4,14 @@
  * and open the template in the editor.
  */
 package Estructuras;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import proyecto.pkg2.edd.GraphvizJava;
 
 /**
  *
@@ -25,6 +30,7 @@ class nodoP{
     }
 }
 public class Pila {
+    static int veces=0;
     public nodoP cima;
     public int tam;
     public Pila(){
@@ -41,5 +47,27 @@ public class Pila {
             this.cima = nuevo;
             this.tam += 1;
         }
+    }
+    public void grafo() throws IOException{
+        nodoP tem=cima;
+        String ruta="pila.dot";
+        String contenido = "digraph G { \n";
+        contenido= contenido+" node [shape=record]; \n";
+        contenido= contenido+" node1[label = \"{ Bitacora";
+        while(tem!=null){
+            contenido=contenido+"|"+"Usuario: "+tem.usuario +" Time: "+tem.tiempo+" Descripcion: "+tem.descripcion;
+            tem=tem.sig;
+        }
+        contenido = contenido + "}\"] \n}";
+        File file = new File(ruta);
+            // Si el archivo no existe es creado
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        FileWriter fw = new FileWriter(file);
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(contenido);
+        bw.close();
+        GraphvizJava grafo=new GraphvizJava("pila.dot","src/Imagenes/pila.png");
     }
 }
