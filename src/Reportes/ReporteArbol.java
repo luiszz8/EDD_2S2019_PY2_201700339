@@ -19,7 +19,7 @@ public class ReporteArbol extends javax.swing.JFrame {
      */
     public ReporteArbol() {
         JLabel label=new JLabel();
-        label.setIcon(new ImageIcon("src/Imagenes/arbol.png"));
+        label.setIcon(new ImageIcon("arbol.png"));
         label.setVisible(true);
         initComponents();
         jScrollPane1.setViewportView(label);
@@ -95,7 +95,7 @@ public class ReporteArbol extends javax.swing.JFrame {
         for (int i = 0; i < cont; i++) {
             aux=aux+"./";
         }
-        label2.setIcon(new ImageIcon(aux+"src/Imagenes/arbol.png"));
+        label2.setIcon(new ImageIcon(aux+"arbol.png"));
         label2.setVisible(true);
         jScrollPane1.setViewportView(label2);
         cont++;

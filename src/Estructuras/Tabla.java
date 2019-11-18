@@ -276,6 +276,6 @@ public class Tabla{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        GraphvizJava grafo=new GraphvizJava("Tabla.dot","src/Imagenes/hash.png");
+        GraphvizJava grafo=new GraphvizJava("Tabla.dot","hash.png");
     }
 }

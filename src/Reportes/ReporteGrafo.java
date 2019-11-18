@@ -20,7 +20,7 @@ public class ReporteGrafo extends javax.swing.JFrame {
      */
     public ReporteGrafo() {
         JLabel label=new JLabel();
-        label.setIcon(new ImageIcon("src/Imagenes/grafo.png"));
+        label.setIcon(new ImageIcon("grafo.png"));
         label.setVisible(true);
         initComponents();
         jScrollPane1.setViewportView(label);
@@ -97,7 +97,7 @@ public class ReporteGrafo extends javax.swing.JFrame {
         for (int i = 0; i < cont; i++) {
             aux=aux+"./";
         }
-        label2.setIcon(new ImageIcon(aux+"src/Imagenes/grafo.png"));
+        label2.setIcon(new ImageIcon(aux+"grafo.png"));
         label2.setVisible(true);
         jScrollPane1.setViewportView(label2);
         cont++;

@@ -68,6 +68,6 @@ public class Pila {
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(contenido);
         bw.close();
-        GraphvizJava grafo=new GraphvizJava("pila.dot","src/Imagenes/pila.png");
+        GraphvizJava grafo=new GraphvizJava("pila.dot","pila.png");
     }
 }

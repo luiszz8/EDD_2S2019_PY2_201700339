@@ -19,7 +19,7 @@ public class ReporteMatriz extends javax.swing.JFrame {
      */
     public ReporteMatriz() {
         JLabel label=new JLabel();
-        label.setIcon(new ImageIcon("src/Imagenes/matriz.png"));
+        label.setIcon(new ImageIcon("matriz.png"));
         label.setVisible(true);
         initComponents();
         jScrollPane1.setViewportView(label);
@@ -95,7 +95,7 @@ public class ReporteMatriz extends javax.swing.JFrame {
         for (int i = 0; i < cont; i++) {
             aux=aux+"./";
         }
-        label2.setIcon(new ImageIcon(aux+"src/Imagenes/matriz.png"));
+        label2.setIcon(new ImageIcon(aux+"matriz.png"));
         label2.setVisible(true);
         jScrollPane1.setViewportView(label2);
         cont++;

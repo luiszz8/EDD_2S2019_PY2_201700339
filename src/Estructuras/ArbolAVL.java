@@ -293,6 +293,9 @@ public class ArbolAVL {
         String ruta = "Arbol.dot";
         String datos = "digraph BST {";
         datos=datos+grafo(raiz);
+        if (raiz.izq==null && raiz.der==null) {
+            datos=datos+ "\"Nombre: " +raiz.contenido.nombre +"."+raiz.contenido.extension +"\\n Contenido: "+raiz.contenido.contenido+"\\n FE: "+(this.obtenerAltura(raiz.der)-this.obtenerAltura(raiz.izq))+"\\n Altura: "+raiz.fe+"\\n Time: "+raiz.contenido.time+"\\n Propiedad: "+raiz.contenido.prop+"\"";
+        }
         datos= datos +"}";
         File file = new File(ruta);
             // Si el archivo no existe es creado
@@ -303,7 +306,7 @@ public class ArbolAVL {
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(datos);
             bw.close();
-            GraphvizJava grafo=new GraphvizJava("Arbol.dot","src/Imagenes/arbol.png");
+            GraphvizJava grafo=new GraphvizJava("Arbol.dot","arbol.png");
     }
     public String grafo(nodoA nodo){
         String datos ="";

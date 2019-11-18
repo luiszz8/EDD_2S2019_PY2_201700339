@@ -8,6 +8,7 @@ package Reportes;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import static proyecto.pkg2.edd.Proyecto2EDD.tablaha;
 
 /**
  *
@@ -21,7 +22,7 @@ public class ReporteHash extends javax.swing.JFrame {
      */
     public ReporteHash() {
         label=new JLabel();
-        label.setIcon(new ImageIcon("src/Imagenes/hash.png"));
+        label.setIcon(new ImageIcon("hash.png"));
         label.setVisible(true);
         initComponents();
         jScrollPane1.setViewportView(label);
@@ -94,12 +95,13 @@ public class ReporteHash extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        tablaha.graficar();
         JLabel label2=new JLabel();
         String aux="";
         for (int i = 0; i < cont; i++) {
             aux=aux+"./";
         }
-        label2.setIcon(new ImageIcon(aux+"src/Imagenes/hash.png"));
+        label2.setIcon(new ImageIcon(aux+"hash.png"));
         label2.setVisible(true);
         jScrollPane1.setViewportView(label2);
         cont++;

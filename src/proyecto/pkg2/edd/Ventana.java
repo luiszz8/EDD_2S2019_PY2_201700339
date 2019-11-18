@@ -14,9 +14,11 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -80,6 +82,7 @@ public class Ventana extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jButton11 = new javax.swing.JButton();
         jButton14 = new javax.swing.JButton();
+        jButton17 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
@@ -218,6 +221,13 @@ public class Ventana extends javax.swing.JFrame {
             }
         });
 
+        jButton17.setText("Descargar");
+        jButton17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton17ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -235,7 +245,8 @@ public class Ventana extends javax.swing.JFrame {
                         .addComponent(jButton11))
                     .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton14))
+                    .addComponent(jButton14)
+                    .addComponent(jButton17))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -250,11 +261,13 @@ public class Ventana extends javax.swing.JFrame {
                 .addComponent(jButton6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(4, 4, 4)
                 .addComponent(jButton8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton14)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton17)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         jTextField1.setText("/");
@@ -663,6 +676,49 @@ public class Ventana extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton16ActionPerformed
 
+    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
+        int contador=0;
+        while(corX>100){
+            corX=corX-101;
+            contador+=1;
+        }
+        while(corY>50){
+            corY=corY-60;
+            contador+=6;
+        }
+        contador=contador-cantC;
+        String sus=auxA[contador];
+        if (sus.equals("/")||sus.equals("raiz")) {
+            
+        }else{
+            FileWriter fw=null;
+            try {
+                //System.out.println(sus);
+                int p=aux.buscar_fila(nombreP);
+                String con=aux.contenidoA(aux.buscar_fila(p), sus);
+                //jTextArea1.setText(con);
+                jPanel3.removeAll();
+                pintarCarpetas(nombreP);
+                File file = new File(sus+".txt");
+                // Si el archivo no existe es creado
+                if (!file.exists()) {
+                    file.createNewFile();
+                }   fw = new FileWriter(file);
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(con);
+                bw.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    fw.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton17ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -815,23 +871,27 @@ public class Ventana extends javax.swing.JFrame {
             }
             while((Fila=br.readLine())!=null){
                 if (primeraU) {
-                    Date date = new Date();
-                    DateFormat hourdateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-                    String time = "Hora y fecha: " + hourdateFormat.format(date);
-                    String[] parte = Fila.split(",",2)[0].split("\\.");
-                    int p=aux.buscar_fila(nombreP);
-                    aux.agregarAVL(parte[0], Fila.split(",",2)[1].replace("\"", ""), parte[1], time,aux.buscar_fila(p),usuario);
-                    pintarCarpetas(nombreP);
-                    bitacora.agregar(usuario, "Se creo el archivo "+Fila.split(",",2)[0]);
+                    if (Fila.split(",",2)[0].split("\\.").length==2) {
+                        Date date = new Date();
+                        DateFormat hourdateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+                        String time = "Hora y fecha: " + hourdateFormat.format(date);
+                        String[] parte = Fila.split(",",2)[0].split("\\.");
+                        int p=aux.buscar_fila(nombreP);
+                        aux.agregarAVL(parte[0], Fila.split(",",2)[1].replace("\"", ""), parte[1], time,aux.buscar_fila(p),usuario);
+                        pintarCarpetas(nombreP);
+                        bitacora.agregar(usuario, "Se creo el archivo "+Fila.split(",",2)[0]);
+                    }
                 }else{
-                    Date date = new Date();
-                    DateFormat hourdateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-                    String time = "Hora y fecha: " + hourdateFormat.format(date);
-                    String[] parte = Fila.split(",",2)[1].split("\\.");
-                    int p=aux.buscar_fila(nombreP);
-                    aux.agregarAVL(parte[0], Fila.split(",",2)[0].replace("\"", ""), parte[1], time,aux.buscar_fila(p),usuario);
-                    pintarCarpetas(nombreP);
-                    bitacora.agregar(usuario, "Se creo el archivo "+Fila.split(",",2)[1]);
+                    if (Fila.split(",",2)[1].split("\\.").length==2) {
+                        Date date = new Date();
+                        DateFormat hourdateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+                        String time = "Hora y fecha: " + hourdateFormat.format(date);
+                        String[] parte = Fila.split(",",2)[1].split("\\.");
+                        int p=aux.buscar_fila(nombreP);
+                        aux.agregarAVL(parte[0], Fila.split(",",2)[0].replace("\"", ""), parte[1], time,aux.buscar_fila(p),usuario);
+                        pintarCarpetas(nombreP);
+                        bitacora.agregar(usuario, "Se creo el archivo "+Fila.split(",",2)[1]);
+                    }
                 }
             }
             return Resultado;
@@ -853,6 +913,7 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
+    private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

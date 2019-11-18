@@ -414,7 +414,7 @@ public class Matriz {
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(mamadisimo);
         bw.close();
-        GraphvizJava grafo=new GraphvizJava("matriz.dot","src/Imagenes/matriz.png");
+        GraphvizJava grafo=new GraphvizJava("matriz.dot","matriz.png");
     }
     public void grafoMamador() throws IOException{
         String supremo="digraph BST {";
@@ -441,6 +441,6 @@ public class Matriz {
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(supremo);
         bw.close();
-        GraphvizJava grafo=new GraphvizJava("grafo.dot","src/Imagenes/grafo.png");
+        GraphvizJava grafo=new GraphvizJava("grafo.dot","grafo.png");
     }
 }
